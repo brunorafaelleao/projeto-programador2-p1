@@ -1,7 +1,41 @@
+@import url("https://fonts.cdnfonts.com/css/star-wars");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
-  color: blueviolet;
+  color: white;
+  font-family: "Star Wars", sans-serif;
+}
+
+/* todas as âncoras ficaram sem o underline */
+a {
+  text-decoration: none;
+}
+
+/* css do plano de fundo da página */
+body {
+  background-image: url("./assets/universo-bg.jpg");
+  background-size: cover;
+}
+
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logo {
+  width: 250px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-img {
+  width: 40%;
+  height: auto;
 }
