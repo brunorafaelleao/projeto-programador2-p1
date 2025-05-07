@@ -166,3 +166,25 @@ footer {
   font-weight: 500;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.modal {
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+}
+
+.modal-content {
+  width: 25vw;
+  height: 70vh;
+  background-color: #0d0d0d;
+  display: flex;
+  row-gap: 15px;
+  padding: 30px 10px;
+  align-items: center;
+}

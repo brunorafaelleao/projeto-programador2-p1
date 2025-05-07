@@ -49,14 +49,30 @@ async function loadCharacters(url) {
       characterNameBG.appendChild(characterName);
       card.appendChild(characterNameBG);
 
+      card.onclick = () => {
+        const modal = document.getElementById("modal");
+        modal.style.visibility = "visible"; //mostrar o modal
+
+        const modalContent = document.getElementById("modal-content");
+        modalContent.innerHTML = ""; //limpar o conteúdo anterior
+
+        const characterImage = document.createElement("div");
+        characterImage.style.backgroundImage = `url('https://starwars-visualguide.com/assets/img/characters/${character.url.replace(/\D/g, "")}.jpg')`;
+        characterImage.className = "character-image";
+
+        const name = document.createElement("span");
+        name.className = "character-details";
+        name.innerText = `Nome: ${character.name}`;
+      };
+
       mainContent.appendChild(card);
     });
 
     const nextButton = document.getElementById("next-button");
     const backButton = document.getElementById("back-button");
 
-    nextButton.disable = !responseJson.next; //desabilitar o botão se não houver próxima página
-    backButton.disable = !responseJson.previous; //desabilitar o botão se não houver página anterior
+    nextButton.disabled = !responseJson.next; //desabilitar o botão se não houver próxima página
+    backButton.disabled = !responseJson.previous; //desabilitar o botão se não houver página anterior
 
     backButton.style.visibility = responseJson.previous ? "visible" : "hidden"; //esconder o botão se não houver página anterior
 
@@ -93,4 +109,9 @@ async function loadPreviousPage() {
     console.log(error);
     alert("Erro ao carregar a página anterior");
   }
+}
+
+function hideModal() {
+  const modal = document.getElementById("modal");
+  modal.style.visibility = "hidden"; //esconder o modal
 }
