@@ -1,16 +1,5 @@
-/*
-Vou comentar aqui o que eu fiz no arquivo script.js
+let currentPageUrl = "https://rickandmortyapi.com/api/character";
 
-página do professor do curso https://rodrigoserrasqueiro.github.io/Star-Wars-Characters/index.html
-
-alert("Bem-vindo ao meu site!");*/
-
-//variavel criada com a url da api
-//let currentPageUrl = "https://swapi.dev/api/people/"; // Página do Star wars -- página com problema
-let currentPageUrl = "https://rickandmortyapi.com/api/character"; // Página do Rick and Morty da refatoração
-
-//toda vez que a página carregar
-//vamos usar async/await para carregar os cards
 window.onload = async () => {
   try {
     await loadCharacters(currentPageUrl);
@@ -26,19 +15,17 @@ window.onload = async () => {
   backButton.addEventListener("click", loadPreviousPage);
 };
 
-//função que carrega os cards da api
 async function loadCharacters(url) {
   const mainContent = document.getElementById("main-content");
-  mainContent.innerHTML = ""; //limpar os resultados anteriores
+  mainContent.innerHTML = ""; // limpa os resultados anteriores
 
   try {
     const response = await fetch(url);
     const responseJson = await response.json();
 
-    response.results.forEach((character) => {
+    responseJson.results.forEach((character) => {
       const card = document.createElement("div");
       card.style.backgroundImage = `url(${character.image})`;
-      // card.style.backgroundImage = `url('https://starwars-visualguide.com/assets/img/characters/${character.url.replace(/\D/g, "")}.jpg')`;
       card.className = "cards";
 
       const characterNameBG = document.createElement("div");
@@ -53,42 +40,46 @@ async function loadCharacters(url) {
 
       card.onclick = () => {
         const modal = document.getElementById("modal");
-        modal.style.visibility = "visible"; //mostrar o modal
+        modal.style.visibility = "visible";
 
         const modalContent = document.getElementById("modal-content");
-        modalContent.innerHTML = ""; //limpar o conteúdo anterior
+        modalContent.innerHTML = "";
 
         const characterImage = document.createElement("div");
-        characterImage.style.backgroundImage = `url('https://starwars-visualguide.com/assets/img/characters/${character.url.replace(/\D/g, "")}.jpg')`;
+        characterImage.style.backgroundImage = `url(${character.image})`;
         characterImage.className = "character-image";
 
         const name = document.createElement("span");
         name.className = "character-details";
         name.innerText = `Nome: ${character.name}`;
 
-        const characterHeight = document.createElement("span");
-        characterHeight.className = "character-details";
-        characterHeight.innerText = `Altura: ${character.heigth}`;
+        const status = document.createElement("span");
+        status.className = "character-details";
+        status.innerText = `Status: ${character.status}`;
 
-        const mass = document.createElement("span");
-        mass.className = "character-details";
-        mass.innerText = `Peso: ${character.mass}`;
-        3;
+        const species = document.createElement("span");
+        species.className = "character-details";
+        species.innerText = `Espécie: ${character.species}`;
 
-        const eyeColor = document.createElement("span");
-        eyeColor.className = "character-details";
-        eyeColor.innerText = `Cor dos olhos: ${character.eye_color}`;
+        const gender = document.createElement("span");
+        gender.className = "character-details";
+        gender.innerText = `Gênero: ${character.gender}`;
 
-        const birthYear = document.createElement("span");
-        birthYear.className = "character-details";
-        birthYear.innerText = `Nascimento: ${character.birth_year}`;
+        const origin = document.createElement("span");
+        origin.className = "character-details";
+        origin.innerText = `Origem: ${character.origin.name}`;
+
+        const location = document.createElement("span");
+        location.className = "character-details";
+        location.innerText = `Local: ${character.location.name}`;
 
         modalContent.appendChild(characterImage);
         modalContent.appendChild(name);
-        modalContent.appendChild(characterHeight);
-        modalContent.appendChild(mass);
-        modalContent.appendChild(eyeColor);
-        modalContent.appendChild(birthYear);
+        modalContent.appendChild(status);
+        modalContent.appendChild(species);
+        modalContent.appendChild(gender);
+        modalContent.appendChild(origin);
+        modalContent.appendChild(location);
       };
 
       mainContent.appendChild(card);
@@ -97,10 +88,10 @@ async function loadCharacters(url) {
     const nextButton = document.getElementById("next-button");
     const backButton = document.getElementById("back-button");
 
-    nextButton.disabled = !responseJson.next; //desabilitar o botão se não houver próxima página
-    backButton.disabled = !responseJson.previous; //desabilitar o botão se não houver página anterior
+    nextButton.disabled = !responseJson.info.next;
+    backButton.disabled = !responseJson.info.prev;
 
-    backButton.style.visibility = responseJson.previous ? "visible" : "hidden"; //esconder o botão se não houver página anterior
+    backButton.style.visibility = responseJson.info.prev ? "visible" : "hidden";
 
     currentPageUrl = url;
   } catch (error) {
@@ -116,7 +107,7 @@ async function loadNextPage() {
     const response = await fetch(currentPageUrl);
     const responseJson = await response.json();
 
-    await loadCharacters(responseJson.next); //carregar a próxima página
+    await loadCharacters(responseJson.info.next);
   } catch (error) {
     console.log(error);
     alert("Erro ao carregar a próxima página");
@@ -130,7 +121,7 @@ async function loadPreviousPage() {
     const response = await fetch(currentPageUrl);
     const responseJson = await response.json();
 
-    await loadCharacters(responseJson.next); //carregar a próxima página
+    await loadCharacters(responseJson.info.prev);
   } catch (error) {
     console.log(error);
     alert("Erro ao carregar a página anterior");
@@ -139,5 +130,5 @@ async function loadPreviousPage() {
 
 function hideModal() {
   const modal = document.getElementById("modal");
-  modal.style.visibility = "hidden"; //esconder o modal
+  modal.style.visibility = "hidden";
 }
